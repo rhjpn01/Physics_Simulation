@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="_generated">
+      <UniqueIdentifier>{336609D1-1F1E-4B1E-8825-247A74FCE50E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_generated\windows-x86_64">
+      <UniqueIdentifier>{49584F81-B51A-830B-FECA-11986ACC5BE9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_generated\windows-x86_64\debug">
+      <UniqueIdentifier>{9FC5B96D-0BA9-C8AD-14AC-F6E9800E8FFE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_generated\windows-x86_64\debug\nvfloweditor">
+      <UniqueIdentifier>{114FCF6B-FD61-CFC4-A64B-ACB1923D6C12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_generated\windows-x86_64\release">
+      <UniqueIdentifier>{99209DF9-058F-F278-4E78-AD78BA25E814}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_generated\windows-x86_64\release\nvfloweditor">
+      <UniqueIdentifier>{4B308D61-37AE-DDFA-20A6-9B920CC31F23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external">
+      <UniqueIdentifier>{2839F3DC-1406-4EE8-3D1F-3C90294B8376}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\imgui">
+      <UniqueIdentifier>{92841FBB-7E52-13C1-67E6-83E75353EF25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shared">
+      <UniqueIdentifier>{9C5CB11B-88FE-DBF1-71B9-EF455DFA6242}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source">
+      <UniqueIdentifier>{76FF3A1C-62A1-65F2-4B5C-7946379DEC42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\nvfloweditor">
+      <UniqueIdentifier>{488EB5F3-B4EF-9201-3D5D-D9B3A9BDC9C0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\nvfloweditor\shaders">
+      <UniqueIdentifier>{41138F90-AD20-BD76-3607-B961A213892D}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\external\imgui\imconfig.h">
+      <Filter>external\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\external\imgui\imgui.h">
+      <Filter>external\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\external\imgui\imgui_internal.h">
+      <Filter>external\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\external\imgui\imstb_rectpack.h">
+      <Filter>external\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\external\imgui\imstb_textedit.h">
+      <Filter>external\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\external\imgui\imstb_truetype.h">
+      <Filter>external\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\shared\NvFlowArray.h">
+      <Filter>shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\shared\NvFlowArrayBuffer.h">
+      <Filter>shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\shared\NvFlowBufferVariable.h">
+      <Filter>shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\shared\NvFlowDatabase.h">
+      <Filter>shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\shared\NvFlowDeepCopy.h">
+      <Filter>shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\shared\NvFlowDynamicBuffer.h">
+      <Filter>shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\shared\NvFlowLocationHashTable.h">
+      <Filter>shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\shared\NvFlowMath.h">
+      <Filter>shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\shared\NvFlowPreprocessor.h">
+      <Filter>shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\shared\NvFlowReadbackBuffer.h">
+      <Filter>shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\shared\NvFlowResourceCPU.h">
+      <Filter>shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\shared\NvFlowString.h">
+      <Filter>shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\shared\NvFlowStringHash.h">
+      <Filter>shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\shared\NvFlowTextureVariable.h">
+      <Filter>shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\shared\NvFlowTimer.h">
+      <Filter>shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\shared\NvFlowUploadBuffer.h">
+      <Filter>shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\nvfloweditor\Camera.h">
+      <Filter>source\nvfloweditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\nvfloweditor\EditorCommon.h">
+      <Filter>source\nvfloweditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\nvfloweditor\FrameCapture.h">
+      <Filter>source\nvfloweditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\nvfloweditor\ImguiRenderer.h">
+      <Filter>source\nvfloweditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\nvfloweditor\Loader.h">
+      <Filter>source\nvfloweditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\nvfloweditor\ShapeRenderer.h">
+      <Filter>source\nvfloweditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\nvfloweditor\Timer.h">
+      <Filter>source\nvfloweditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\nvfloweditor\shaders\ImguiParams.h">
+      <Filter>source\nvfloweditor\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\nvfloweditor\shaders\ShapeParams.h">
+      <Filter>source\nvfloweditor\shaders</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\_generated\windows-x86_64\debug\nvfloweditor\generated.cpp">
+      <Filter>_generated\windows-x86_64\debug\nvfloweditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\_generated\windows-x86_64\debug\nvfloweditor\generated_cpu.cpp">
+      <Filter>_generated\windows-x86_64\debug\nvfloweditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\_generated\windows-x86_64\release\nvfloweditor\generated.cpp">
+      <Filter>_generated\windows-x86_64\release\nvfloweditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\_generated\windows-x86_64\release\nvfloweditor\generated_cpu.cpp">
+      <Filter>_generated\windows-x86_64\release\nvfloweditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\imgui\imgui.cpp">
+      <Filter>external\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\imgui\imgui_demo.cpp">
+      <Filter>external\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\imgui\imgui_draw.cpp">
+      <Filter>external\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\imgui\imgui_widgets.cpp">
+      <Filter>external\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\shared\NvFlowPreprocessor.cpp">
+      <Filter>shared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\shared\NvFlowString.cpp">
+      <Filter>shared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\nvfloweditor\Camera.cpp">
+      <Filter>source\nvfloweditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\nvfloweditor\EditorCompute.cpp">
+      <Filter>source\nvfloweditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\nvfloweditor\EditorFlow.cpp">
+      <Filter>source\nvfloweditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\nvfloweditor\EditorFlowStages.cpp">
+      <Filter>source\nvfloweditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\nvfloweditor\EditorGlfw.cpp">
+      <Filter>source\nvfloweditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\nvfloweditor\EditorImgui.cpp">
+      <Filter>source\nvfloweditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\nvfloweditor\FrameCapture.cpp">
+      <Filter>source\nvfloweditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\nvfloweditor\ImguiRenderer.cpp">
+      <Filter>source\nvfloweditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\nvfloweditor\NvFlowEditor.cpp">
+      <Filter>source\nvfloweditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\nvfloweditor\ShapeRenderer.cpp">
+      <Filter>source\nvfloweditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\nvfloweditor\StandaloneTest.cpp">
+      <Filter>source\nvfloweditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\nvfloweditor\Test.cpp">
+      <Filter>source\nvfloweditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\nvfloweditor\TestC.c">
+      <Filter>source\nvfloweditor</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\..\..\source\nvfloweditor\shaders\ImguiBuildCS.hlsl">
+      <Filter>source\nvfloweditor\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\..\source\nvfloweditor\shaders\ImguiCS.hlsl">
+      <Filter>source\nvfloweditor\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\..\source\nvfloweditor\shaders\ImguiTileCS.hlsl">
+      <Filter>source\nvfloweditor\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\..\source\nvfloweditor\shaders\ImguiTileCountCS.hlsl">
+      <Filter>source\nvfloweditor\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\..\source\nvfloweditor\shaders\ImguiTileScanCS.hlsl">
+      <Filter>source\nvfloweditor\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\..\source\nvfloweditor\shaders\ShapeCS.hlsl">
+      <Filter>source\nvfloweditor\shaders</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\source\nvfloweditor\shaders\ImguiBlockScan.hlsli">
+      <Filter>source\nvfloweditor\shaders</Filter>
+    </None>
+  </ItemGroup>
+</Project>

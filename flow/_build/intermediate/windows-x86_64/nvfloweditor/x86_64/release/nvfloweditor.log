@@ -1,0 +1,85 @@
+﻿  building ../../../source/nvfloweditor/shaders/ImguiCS.hlsl
+  building ../../../source/nvfloweditor/shaders/ImguiBuildCS.hlsl
+  building ../../../source/nvfloweditor/shaders/ImguiTileCS.hlsl
+  building ../../../source/nvfloweditor/shaders/ImguiTileCountCS.hlsl
+  building ../../../source/nvfloweditor/shaders/ImguiTileScanCS.hlsl
+  building ../../../source/nvfloweditor/shaders/ShapeCS.hlsl
+  NvFlowProcessList: "../../../external/glslang/glslangValidator.exe" "-S" "comp" "../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ImguiCS_combinedSampler.glsl" "-V" "-x" "--vn" "ImguiCS_combinedSampler_glsl" "-o" "../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ImguiCS_combinedSampler.glsl.h"
+  	 ../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ImguiCS_combinedSampler.glsl
+  
+  NvFlowProcessList: "../../../external/glslang/glslangValidator.exe" "-S" "comp" "../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ImguiCS_separateSampler.glsl" "-V" "-x" "--vn" "ImguiCS_separateSampler_glsl" "-o" "../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ImguiCS_separateSampler.glsl.h"
+  	 ../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ImguiCS_separateSampler.glsl
+  
+  NvFlowProcessList: "../../../external/glslang/glslangValidator.exe" "-S" "comp" "../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ImguiBuildCS_combinedSampler.glsl" "-V" "-x" "--vn" "ImguiBuildCS_combinedSampler_glsl" "-o" "../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ImguiBuildCS_combinedSampler.glsl.h"
+  	 ../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ImguiBuildCS_combinedSampler.glsl
+  
+  NvFlowProcessList: "../../../external/glslang/glslangValidator.exe" "-S" "comp" "../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ImguiBuildCS_separateSampler.glsl" "-V" "-x" "--vn" "ImguiBuildCS_separateSampler_glsl" "-o" "../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ImguiBuildCS_separateSampler.glsl.h"
+  	 ../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ImguiBuildCS_separateSampler.glsl
+  
+  NvFlowProcessList: "../../../external/glslang/glslangValidator.exe" "-S" "comp" "../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ImguiTileCS_combinedSampler.glsl" "-V" "-x" "--vn" "ImguiTileCS_combinedSampler_glsl" "-o" "../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ImguiTileCS_combinedSampler.glsl.h"
+  	 ../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ImguiTileCS_combinedSampler.glsl
+  
+  NvFlowProcessList: "../../../external/glslang/glslangValidator.exe" "-S" "comp" "../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ImguiTileCS_separateSampler.glsl" "-V" "-x" "--vn" "ImguiTileCS_separateSampler_glsl" "-o" "../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ImguiTileCS_separateSampler.glsl.h"
+  	 ../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ImguiTileCS_separateSampler.glsl
+  
+  NvFlowProcessList: "fxc.exe" "/E" "main" "/T" "cs_5_0" "/nologo" "/Vn" "ImguiCS_separateSampler_hlsl" "/Fh" "../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ImguiCS_separateSampler.hlsl.h" "../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ImguiCS_separateSampler.hlsl"
+  	 compilation header save succeeded; see E:\git\Physics_Simulation\PhysX\flow\_generated\windows-x86_64\release\nvfloweditor\shaders\ImguiCS_separateSampler.hlsl.h
+  
+  NvFlowProcessList: "../../../external/glslang/glslangValidator.exe" "-S" "comp" "../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ImguiTileCountCS_combinedSampler.glsl" "-V" "-x" "--vn" "ImguiTileCountCS_combinedSampler_glsl" "-o" "../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ImguiTileCountCS_combinedSampler.glsl.h"
+  	 ../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ImguiTileCountCS_combinedSampler.glsl
+  
+  NvFlowProcessList: "../../../external/glslang/glslangValidator.exe" "-S" "comp" "../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ImguiTileCountCS_separateSampler.glsl" "-V" "-x" "--vn" "ImguiTileCountCS_separateSampler_glsl" "-o" "../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ImguiTileCountCS_separateSampler.glsl.h"
+  	 ../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ImguiTileCountCS_separateSampler.glsl
+  
+  NvFlowProcessList: "../../../external/glslang/glslangValidator.exe" "-S" "comp" "../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ImguiTileScanCS_combinedSampler.glsl" "-V" "-x" "--vn" "ImguiTileScanCS_combinedSampler_glsl" "-o" "../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ImguiTileScanCS_combinedSampler.glsl.h"
+  	 ../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ImguiTileScanCS_combinedSampler.glsl
+  
+  NvFlowProcessList: "../../../external/glslang/glslangValidator.exe" "-S" "comp" "../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ImguiTileScanCS_separateSampler.glsl" "-V" "-x" "--vn" "ImguiTileScanCS_separateSampler_glsl" "-o" "../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ImguiTileScanCS_separateSampler.glsl.h"
+  	 ../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ImguiTileScanCS_separateSampler.glsl
+  
+  NvFlowProcessList: "fxc.exe" "/E" "main" "/T" "cs_5_0" "/nologo" "/Vn" "ImguiTileCS_separateSampler_hlsl" "/Fh" "../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ImguiTileCS_separateSampler.hlsl.h" "../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ImguiTileCS_separateSampler.hlsl"
+  	 compilation header save succeeded; see E:\git\Physics_Simulation\PhysX\flow\_generated\windows-x86_64\release\nvfloweditor\shaders\ImguiTileCS_separateSampler.hlsl.h
+  
+  NvFlowProcessList: "../../../external/glslang/glslangValidator.exe" "-S" "comp" "../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ShapeCS_combinedSampler.glsl" "-V" "-x" "--vn" "ShapeCS_combinedSampler_glsl" "-o" "../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ShapeCS_combinedSampler.glsl.h"
+  	 ../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ShapeCS_combinedSampler.glsl
+  
+  NvFlowProcessList: "fxc.exe" "/E" "main" "/T" "cs_5_0" "/nologo" "/Vn" "ImguiTileScanCS_separateSampler_hlsl" "/Fh" "../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ImguiTileScanCS_separateSampler.hlsl.h" "../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ImguiTileScanCS_separateSampler.hlsl"
+  	 compilation header save succeeded; see E:\git\Physics_Simulation\PhysX\flow\_generated\windows-x86_64\release\nvfloweditor\shaders\ImguiTileScanCS_separateSampler.hlsl.h
+  
+  NvFlowProcessList: "fxc.exe" "/E" "main" "/T" "cs_5_0" "/nologo" "/Vn" "ShapeCS_separateSampler_hlsl" "/Fh" "../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ShapeCS_separateSampler.hlsl.h" "../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ShapeCS_separateSampler.hlsl"
+  	 compilation header save succeeded; see E:\git\Physics_Simulation\PhysX\flow\_generated\windows-x86_64\release\nvfloweditor\shaders\ShapeCS_separateSampler.hlsl.h
+  
+  NvFlowProcessList: "../../../external/glslang/glslangValidator.exe" "-S" "comp" "../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ShapeCS_separateSampler.glsl" "-V" "-x" "--vn" "ShapeCS_separateSampler_glsl" "-o" "../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ShapeCS_separateSampler.glsl.h"
+  	 ../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ShapeCS_separateSampler.glsl
+  
+  NvFlowProcessList: "fxc.exe" "/E" "main" "/T" "cs_5_0" "/nologo" "/Vn" "ImguiBuildCS_separateSampler_hlsl" "/Fh" "../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ImguiBuildCS_separateSampler.hlsl.h" "../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ImguiBuildCS_separateSampler.hlsl"
+  	 compilation header save succeeded; see E:\git\Physics_Simulation\PhysX\flow\_generated\windows-x86_64\release\nvfloweditor\shaders\ImguiBuildCS_separateSampler.hlsl.h
+  
+  NvFlowProcessList: "fxc.exe" "/E" "main" "/T" "cs_5_0" "/nologo" "/Vn" "ImguiTileCountCS_separateSampler_hlsl" "/Fh" "../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ImguiTileCountCS_separateSampler.hlsl.h" "../../../_generated/windows-x86_64/release/nvfloweditor/shaders/ImguiTileCountCS_separateSampler.hlsl"
+  	 compilation header save succeeded; see E:\git\Physics_Simulation\PhysX\flow\_generated\windows-x86_64\release\nvfloweditor\shaders\ImguiTileCountCS_separateSampler.hlsl.h
+  
+  generated.cpp
+  generated_cpu.cpp
+  imgui.cpp
+  imgui_demo.cpp
+  imgui_draw.cpp
+  imgui_widgets.cpp
+  NvFlowPreprocessor.cpp
+  NvFlowString.cpp
+  Camera.cpp
+  EditorCompute.cpp
+  EditorFlow.cpp
+  EditorFlowStages.cpp
+  EditorGlfw.cpp
+  EditorImgui.cpp
+  FrameCapture.cpp
+  ImguiRenderer.cpp
+  NvFlowEditor.cpp
+  ShapeRenderer.cpp
+  StandaloneTest.cpp
+  Test.cpp
+  Generating Code...
+  TestC.c
+     Creating library ..\..\..\_build\windows-x86_64\release\nvfloweditor.lib and object ..\..\..\_build\windows-x86_64\release\nvfloweditor.exp
+  nvfloweditor.vcxproj -> E:\git\Physics_Simulation\PhysX\flow\_build\windows-x86_64\release\nvfloweditor.exe
+          1 file(s) moved.
