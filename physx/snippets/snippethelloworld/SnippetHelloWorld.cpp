@@ -74,42 +74,39 @@ std::shared_ptr<open3d::geometry::Geometry> LoadPLY(const std::string& ply_path)
 	}
 }
 
-static PxRigidStatic* createRigidBodyFromPLY(const char* filename)
+/* Load triangle mesh from a file (onlu confirmed .ply and .stl) using Open3D then transform 3D object from open3D triangle mesh to PhysX triangle mesh. */
+static PxRigidStatic* createRigidBodyFromFile(const std::string& filename, std::vector<float>& vertices, std::vector<unsigned int>& indices) 
 {
 	// Read PLY file using Open3D
-	auto mesh = open3d::io::CreateMeshFromFile(filename);
-	if (!mesh)
-	{
-		auto point_cloud = open3d::io::CreatePointCloudFromFile(filename);
-		if (!point_cloud) {
-			std::cerr << "Error: Failed to read PLY file " << filename << std::endl;
-			return nullptr;
-		}
+	auto mesh = std::make_shared<open3d::geometry::TriangleMesh>();
+	if (!open3d::io::ReadTriangleMesh(filename, *mesh)) {
+		std::cerr << "Failed to load STL file: " << filename << std::endl;
+		return false;
 	}
 
-	// Convert Open3D vertices to PhysX vertices
-	std::vector<PxVec3> vertices;
-	for (const auto& point : mesh->vertices_)
-	{
-		vertices.emplace_back(point.x(), point.y(), point.z());
+	// Extract vertices
+	for (const auto& vertex : mesh->vertices_) {
+		vertices.push_back(static_cast<float>(vertex(0)));
+		vertices.push_back(static_cast<float>(vertex(1)));
+		vertices.push_back(static_cast<float>(vertex(2)));
 	}
 
-	// Convert Open3D triangles to PhysX faces
-	std::vector<PxVec3> faces;
-	for (const auto& triangle : mesh->triangles_)
-	{
-		faces.emplace_back(triangle.x(), triangle.y(), triangle.z());
+	// Extract indices
+	for (const auto& triangle : mesh->triangles_) {
+		indices.push_back(static_cast<unsigned int>(triangle(0)));
+		indices.push_back(static_cast<unsigned int>(triangle(1)));
+		indices.push_back(static_cast<unsigned int>(triangle(2)));
 	}
 
 	// Create PhysX triangle mesh
 	PxTriangleMeshDesc meshDesc;
-	meshDesc.points.count = static_cast<PxU32>(vertices.size());
-	meshDesc.points.stride = sizeof(PxVec3);
+	meshDesc.points.count = static_cast<PxU32>(vertices.size() / 3);
+	meshDesc.points.stride = sizeof(float) * 3;
 	meshDesc.points.data = vertices.data();
 
-	meshDesc.triangles.count = static_cast<PxU32>(faces.size() / 3);
-	meshDesc.triangles.stride = 3 * sizeof(PxU32);
-	meshDesc.triangles.data = faces.data();
+	meshDesc.triangles.count = static_cast<PxU32>(indices.size() / 3);
+	meshDesc.triangles.stride = sizeof(unsigned int) * 3;
+	meshDesc.triangles.data = indices.data();
 
 	meshDesc.flags = PxMeshFlags();
 
@@ -129,13 +126,9 @@ static PxRigidStatic* createRigidBodyFromPLY(const char* filename)
 	gMesh.triangleMesh = gTriangleMesh;
 
 	// Create PhysX rigid body
-//	PxShape* meshShape = gPhysics->createShape(gMesh, *gPhysics->createMaterial(0.1f, 0.5f, 0.3f));
 	PxShape* meshShape = gPhysics->createShape(gMesh, *gMaterial);
 	meshShape->setLocalPose(PxTransform(PxIdentity));
-	PxRigidStatic* staticActor = PxCreateStatic(*gPhysics, PxTransform(PxVec3(50, 50, 50)), *meshShape);
-//	PxRigidStatic* staticActor = gPhysics->createRigidStatic(PxTransform(PxVec3(5,5,5)));
-//	staticActor->attachShape(*meshShape);
-	// gScene->addActor(*staticActor);
+	PxRigidStatic* staticActor = PxCreateStatic(*gPhysics, PxTransform(PxVec3(10, 10, 10)), *meshShape);
 
 	return staticActor;
 
@@ -173,10 +166,7 @@ static PxRigidStatic* CreateTriangleMesh(const PxVec3* verts, const PxU32 numVer
 	PxShape* meshShape = gPhysics->createShape(mesh, *gMaterial);
 	// Setting the initial local position (setting in triangleRigitStatic definition)
 	meshShape->setLocalPose(PxTransform(PxIdentity));
-	PxRigidStatic* triangleRigitStatic = PxCreateStatic(*gPhysics, PxTransform(PxVec3(10, 10, 10)), *meshShape);
-
-	// Add the static actor to the scene
-	// gScene->addActor(*triangleRigitStatic); 
+	PxRigidStatic* triangleRigitStatic = PxCreateStatic(*gPhysics, PxTransform(PxVec3(20, 20, 20)), *meshShape);
 
 	return triangleRigitStatic;
 }
@@ -264,18 +254,18 @@ void initPhysics(bool interactive)
 		6, 3, 7
 	};
 
-	PxRigidStatic* cube = CreateTriangleMesh(cubeVerts, 8, cubeIndices, 36);
-	gScene->addActor(*cube);
+	//PxRigidStatic* cube = CreateTriangleMesh(cubeVerts, 8, cubeIndices, 36);
+	//gScene->addActor(*cube);
 
 	//for (PxU32 i = 0; i < 5; i++)
 	//	createStack(PxTransform(PxVec3(0, 0, stackZ -= 10.0f)), 10, 2.0f);
-
-	PxRigidStatic* rigidStaticBody1 = createRigidBodyFromPLY(objectPath1);
+	std::vector<float> vertices;
+	std::vector<unsigned int> indices;
+	PxRigidStatic* rigidStaticBody1 = createRigidBodyFromFile(objectPath1, vertices, indices);
 	gScene->addActor(*rigidStaticBody1);
 
-
 	if (!interactive)
-		createDynamic(PxTransform(PxVec3(0, 40, 100)), PxSphereGeometry(10), PxVec3(0, -50, -100));
+		createDynamic(PxTransform(PxVec3(0, 40, 100)), PxSphereGeometry(5), PxVec3(0, -50, -100));
 }
 
 void stepPhysics(bool /*interactive*/)
@@ -304,7 +294,7 @@ void keyPress(unsigned char key, const PxTransform& camera)
 {
 	switch(toupper(key))
 	{
-	case 'B':	createStack(PxTransform(PxVec3(0,0,stackZ-=10.0f)), 10, 2.0f);						break;
+	// case 'B':	createStack(PxTransform(PxVec3(0,0,stackZ-=10.0f)), 10, 2.0f);						break;
 	case ' ':	createDynamic(camera, PxSphereGeometry(3.0f), camera.rotate(PxVec3(0,0,-1))*200);	break;
 	}
 }
@@ -319,8 +309,6 @@ int snippetMain(int argc, char** argv)
 
 	// Save file paths of 3D objects
 	objectPath1 = argv[1];
-
-	 //PxRigidStatic* rigidStaticBody1 = createRigidBodyFromPLY(objectPath1, gPhysics, gScene);
 
 #ifdef RENDER_SNIPPET
 	extern void renderLoop();
