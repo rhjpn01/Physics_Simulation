@@ -51,10 +51,12 @@ static PxDefaultCpuDispatcher*	gDispatcher = NULL;
 static PxScene*					gScene		= NULL;
 static PxMaterial*				gMaterial	= NULL;
 static PxPvd*					gPvd        = NULL;
+static PxCudaContextManager*	gCudaContextManager = NULL;
 
 static PxReal stackZ = 10.0f;
 
 char* objectPath1 = nullptr;
+char* objectPath2 = nullptr;
 
 // Function to load point cloud or mesh from .ply file **not used**
 std::shared_ptr<open3d::geometry::Geometry> LoadPLY(const std::string& ply_path) {
@@ -74,8 +76,9 @@ std::shared_ptr<open3d::geometry::Geometry> LoadPLY(const std::string& ply_path)
 	}
 }
 
-/* Load triangle mesh from a file (onlu confirmed .ply and .stl) using Open3D then transform 3D object from open3D triangle mesh to PhysX triangle mesh. */
-static PxRigidStatic* createRigidBodyFromFile(const std::string& filename, std::vector<float>& vertices, std::vector<unsigned int>& indices) 
+/* Load triangle mesh from a file (only confirmed .ply and .stl) using Open3D then transform 3D object from open3D triangle mesh to PhysX triangle mesh.
+Then add 3D model to static actor.*/
+static PxRigidStatic* createStaticRigidBodyFromFile(const std::string& filename, std::vector<float>& vertices, std::vector<unsigned int>& indices) 
 {
 	// Read PLY file using Open3D
 	auto mesh = std::make_shared<open3d::geometry::TriangleMesh>();
@@ -129,8 +132,72 @@ static PxRigidStatic* createRigidBodyFromFile(const std::string& filename, std::
 	PxShape* meshShape = gPhysics->createShape(gMesh, *gMaterial);
 	meshShape->setLocalPose(PxTransform(PxIdentity));
 	PxRigidStatic* staticActor = PxCreateStatic(*gPhysics, PxTransform(PxVec3(10, 10, 10)), *meshShape);
+	PxQuat rotation(PxPi / 4, PxVec3(0, 1, 0));
 
 	return staticActor;
+
+}
+
+/* Load triangle mesh from a file (only confirmed .ply and .stl) using Open3D then transform 3D object from open3D triangle mesh to PhysX triangle mesh.
+Then add 3D model to static actor.*/
+static PxRigidDynamic* createDynamicRigidBodyFromFile(const std::string& filename, std::vector<float>& vertices, std::vector<unsigned int>& indices)
+{
+	// Read PLY file using Open3D
+	auto mesh = std::make_shared<open3d::geometry::TriangleMesh>();
+	if (!open3d::io::ReadTriangleMesh(filename, *mesh)) {
+		std::cerr << "Failed to load STL file: " << filename << std::endl;
+		return false;
+	}
+
+	// Extract vertices
+	for (const auto& vertex : mesh->vertices_) {
+		vertices.push_back(static_cast<float>(vertex(0)));
+		vertices.push_back(static_cast<float>(vertex(1)));
+		vertices.push_back(static_cast<float>(vertex(2)));
+	}
+
+	// Extract indices
+	for (const auto& triangle : mesh->triangles_) {
+		indices.push_back(static_cast<unsigned int>(triangle(0)));
+		indices.push_back(static_cast<unsigned int>(triangle(1)));
+		indices.push_back(static_cast<unsigned int>(triangle(2)));
+	}
+
+	// Create PhysX triangle mesh
+	PxTriangleMeshDesc meshDesc;
+	meshDesc.points.count = static_cast<PxU32>(vertices.size() / 3);
+	meshDesc.points.stride = sizeof(float) * 3;
+	meshDesc.points.data = vertices.data();
+
+	meshDesc.triangles.count = static_cast<PxU32>(indices.size() / 3);
+	meshDesc.triangles.stride = sizeof(unsigned int) * 3;
+	meshDesc.triangles.data = indices.data();
+
+	meshDesc.flags = PxMeshFlags();
+
+	PxCookingParams cookingParams(gPhysics->getTolerancesScale());
+	PxDefaultMemoryOutputStream writeBuffer;
+	if (!PxCookTriangleMesh(cookingParams, meshDesc, writeBuffer)) {
+		std::cerr << "Error cooking mesh." << std::endl;
+		return nullptr;
+	}
+
+	// Create triangle mesh from cooked data
+
+	PxDefaultMemoryInputData readBuffer(writeBuffer.getData(), writeBuffer.getSize());
+	PxTriangleMesh* gTriangleMesh = gPhysics->createTriangleMesh(readBuffer);
+
+	PxTriangleMeshGeometry gMesh{};
+	gMesh.triangleMesh = gTriangleMesh;
+	// Create PhysX rigid body
+	PxShape* meshShape = gPhysics->createShape(gMesh, *gMaterial);
+	meshShape->setLocalPose(PxTransform(PxIdentity));
+	PxRigidDynamic* dynamicActor = PxCreateDynamic(*gPhysics, PxTransform(PxVec3(10, 10, 10)), *meshShape, 10.0f);
+	PxQuat rotation(PxPi / 4, PxVec3(0, 1, 0));
+	dynamicActor->setAngularDamping(0.5f);
+	dynamicActor->setLinearVelocity(PxVec3(0));
+
+	return dynamicActor;
 
 }
 
@@ -205,13 +272,51 @@ void initPhysics(bool interactive)
 	PxPvdTransport* transport = PxDefaultPvdSocketTransportCreate(PVD_HOST, 5425, 10);
 	gPvd->connect(*transport,PxPvdInstrumentationFlag::eALL);
 
+	// initialize cuda
+	PxCudaContextManagerDesc cudaContextManagerDesc;
+	gCudaContextManager = PxCreateCudaContextManager(*gFoundation, cudaContextManagerDesc, PxGetProfilerCallback());
+	if (gCudaContextManager && !gCudaContextManager->contextIsValid())
+	{
+		gCudaContextManager->release();
+		gCudaContextManager = NULL;
+		printf("Failed to initialize cuda context.\n");
+	}
+
+	PxTolerancesScale scale;
 	gPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *gFoundation, PxTolerancesScale(),true,gPvd);
+	PxInitExtensions(*gPhysics, gPvd);
+
+	PxCookingParams params(scale);
+	params.meshWeldTolerance = 0.001f;
+	params.meshPreprocessParams = PxMeshPreprocessingFlags(PxMeshPreprocessingFlag::eWELD_VERTICES);
+	params.buildTriangleAdjacencies = false;
+	params.buildGPUData = true;
 
 	PxSceneDesc sceneDesc(gPhysics->getTolerancesScale());
 	sceneDesc.gravity = PxVec3(0.0f, -9.81f, 0.0f);
+	// cuda 
+	if (!sceneDesc.cudaContextManager)
+		sceneDesc.cudaContextManager = gCudaContextManager;
+
+	sceneDesc.flags |= PxSceneFlag::eENABLE_GPU_DYNAMICS;
+	sceneDesc.flags |= PxSceneFlag::eENABLE_PCM;
+
+	PxU32 numCores = SnippetUtils::getNbPhysicalCores();
+	gDispatcher = PxDefaultCpuDispatcherCreate(numCores == 0 ? 0 : numCores - 1);
+	//cuda end
+
 	gDispatcher = PxDefaultCpuDispatcherCreate(2);
 	sceneDesc.cpuDispatcher	= gDispatcher;
 	sceneDesc.filterShader	= PxDefaultSimulationFilterShader;
+	sceneDesc.flags |= PxSceneFlag::eENABLE_ACTIVE_ACTORS;
+
+	//cuda
+	sceneDesc.sceneQueryUpdateMode = PxSceneQueryUpdateMode::eBUILD_ENABLED_COMMIT_DISABLED;
+	sceneDesc.broadPhaseType = PxBroadPhaseType::eGPU;
+	sceneDesc.gpuMaxNumPartitions = 8;
+
+	sceneDesc.solverType = PxSolverType::eTGS;
+	//cuda end
 	gScene = gPhysics->createScene(sceneDesc);
 
 	PxPvdSceneClient* pvdClient = gScene->getScenePvdClient();
@@ -261,9 +366,10 @@ void initPhysics(bool interactive)
 	//	createStack(PxTransform(PxVec3(0, 0, stackZ -= 10.0f)), 10, 2.0f);
 	std::vector<float> vertices;
 	std::vector<unsigned int> indices;
-	PxRigidStatic* rigidStaticBody1 = createRigidBodyFromFile(objectPath1, vertices, indices);
-	gScene->addActor(*rigidStaticBody1);
-
+	//PxRigidStatic* rigidStaticBody1 = createStaticRigidBodyFromFile(objectPath1, vertices, indices);
+	//gScene->addActor(*rigidStaticBody1);
+	PxRigidDynamic* rigidDynamicBody1 = createDynamicRigidBodyFromFile(objectPath1, vertices, indices);
+	gScene->addActor(*rigidDynamicBody1);
 	if (!interactive)
 		createDynamic(PxTransform(PxVec3(0, 40, 100)), PxSphereGeometry(5), PxVec3(0, -50, -100));
 }
@@ -308,7 +414,8 @@ int snippetMain(int argc, char** argv)
 		}
 
 	// Save file paths of 3D objects
-	objectPath1 = argv[1];
+		objectPath1 = argv[1];
+		objectPath2 = argv[2];
 
 #ifdef RENDER_SNIPPET
 	extern void renderLoop();
