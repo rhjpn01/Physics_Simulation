@@ -192,8 +192,8 @@ static PxRigidDynamic* createDynamicRigidBodyFromFile(const std::string& filenam
 	// Create PhysX rigid body
 	PxShape* meshShape = gPhysics->createShape(gMesh, *gMaterial);
 	meshShape->setLocalPose(PxTransform(PxIdentity));
-	PxRigidDynamic* dynamicActor = PxCreateDynamic(*gPhysics, PxTransform(PxVec3(10, 10, 10)), *meshShape, 10.0f);
-	PxQuat rotation(PxPi / 4, PxVec3(0, 1, 0));
+	PxRigidDynamic* dynamicActor = PxCreateKinematic(*gPhysics, PxTransform(PxVec3(10, 10, 10)), *meshShape, 100.0f);
+	PxQuat rotation(PxPi / 4, PxVec3(1, 1, 0));
 	dynamicActor->setAngularDamping(0.5f);
 	dynamicActor->setLinearVelocity(PxVec3(0));
 
@@ -233,7 +233,7 @@ static PxRigidDynamic* CreateTriangleMeshDynamic(const PxVec3* verts, const PxU3
 	PxShape* meshShape = gPhysics->createShape(mesh, *gMaterial);
 	// Setting the initial local position (setting in triangleRigitStatic definition)
 	meshShape->setLocalPose(PxTransform(PxIdentity));
-	PxRigidDynamic* triangleRigitDynamic = PxCreateDynamic(*gPhysics, PxTransform(PxVec3(20, 20, 20)), *meshShape, 10.0f);
+	PxRigidDynamic* triangleRigitDynamic = PxCreateKinematic(*gPhysics, PxTransform(PxVec3(20, 20, 20)), *meshShape, 10.0f);
 
 	return triangleRigitDynamic;
 }
@@ -396,20 +396,20 @@ void initPhysics(bool interactive)
 		6, 3, 7
 	};
 
-	//PxRigidDynamic* cube = CreateTriangleMeshDynamic(cubeVerts, 8, cubeIndices, 36);
-	//gScene->addActor(*cube);
-
-	PxRigidStatic* cube = CreateTriangleMeshStatic(cubeVerts, 8, cubeIndices, 36);
+	PxRigidDynamic* cube = CreateTriangleMeshDynamic(cubeVerts, 8, cubeIndices, 36);
 	gScene->addActor(*cube);
+
+	//PxRigidStatic* cube = CreateTriangleMeshStatic(cubeVerts, 8, cubeIndices, 36);
+	//gScene->addActor(*cube);
 
 	//for (PxU32 i = 0; i < 5; i++)
 	//	createStack(PxTransform(PxVec3(0, 0, stackZ -= 10.0f)), 10, 2.0f);
 	std::vector<float> vertices;
 	std::vector<unsigned int> indices;
-	PxRigidStatic* rigidStaticBody1 = createStaticRigidBodyFromFile(objectPath1, vertices, indices);
-	gScene->addActor(*rigidStaticBody1);
-	//PxRigidDynamic* rigidDynamicBody1 = createDynamicRigidBodyFromFile(objectPath1, vertices, indices);
-	//gScene->addActor(*rigidDynamicBody1);
+	//PxRigidStatic* rigidStaticBody1 = createStaticRigidBodyFromFile(objectPath1, vertices, indices);
+	//gScene->addActor(*rigidStaticBody1);
+	PxRigidDynamic* rigidDynamicBody1 = createDynamicRigidBodyFromFile(objectPath1, vertices, indices);
+	gScene->addActor(*rigidDynamicBody1);
 	if (!interactive)
 		createDynamic(PxTransform(PxVec3(0, 40, 100)), PxSphereGeometry(5), PxVec3(0, -50, -100));
 }
