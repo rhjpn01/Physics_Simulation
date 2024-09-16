@@ -202,7 +202,44 @@ static PxRigidDynamic* createDynamicRigidBodyFromFile(const std::string& filenam
 }
 
 // Function to create a 3D triangle mesh model
-static PxRigidStatic* CreateTriangleMesh(const PxVec3* verts, const PxU32 numVerts,
+static PxRigidDynamic* CreateTriangleMeshDynamic(const PxVec3* verts, const PxU32 numVerts,
+	const PxU32* indices, const PxU32 numIndices) {
+	PxTriangleMeshDesc meshDesc;
+	meshDesc.points.count = numVerts;
+	meshDesc.points.stride = sizeof(PxVec3);
+	meshDesc.points.data = verts;
+
+	meshDesc.triangles.count = numIndices / 3;
+	meshDesc.triangles.stride = 3 * sizeof(PxU32);
+	meshDesc.triangles.data = indices;
+
+	meshDesc.flags = PxMeshFlags();
+
+	// Cook the triangle mesh
+	PxCookingParams cookingParams(gPhysics->getTolerancesScale());
+	PxDefaultMemoryOutputStream writeBuffer;
+	if (!PxCookTriangleMesh(cookingParams, meshDesc, writeBuffer)) {
+		std::cerr << "Error cooking mesh." << std::endl;
+		return nullptr;
+	}
+
+	// Create triangle mesh from cooked data
+	PxDefaultMemoryInputData readBuffer(writeBuffer.getData(), writeBuffer.getSize());
+	PxTriangleMesh* gtriangleMesh = gPhysics->createTriangleMesh(readBuffer);
+
+	PxTriangleMeshGeometry mesh{};
+	mesh.triangleMesh = gtriangleMesh;
+
+	PxShape* meshShape = gPhysics->createShape(mesh, *gMaterial);
+	// Setting the initial local position (setting in triangleRigitStatic definition)
+	meshShape->setLocalPose(PxTransform(PxIdentity));
+	PxRigidDynamic* triangleRigitDynamic = PxCreateDynamic(*gPhysics, PxTransform(PxVec3(20, 20, 20)), *meshShape, 10.0f);
+
+	return triangleRigitDynamic;
+}
+
+// Function to create a 3D triangle mesh model
+static PxRigidStatic* CreateTriangleMeshStatic(const PxVec3* verts, const PxU32 numVerts,
 	const PxU32* indices, const PxU32 numIndices) {
 	PxTriangleMeshDesc meshDesc;
 	meshDesc.points.count = numVerts;
@@ -359,17 +396,20 @@ void initPhysics(bool interactive)
 		6, 3, 7
 	};
 
-	//PxRigidStatic* cube = CreateTriangleMesh(cubeVerts, 8, cubeIndices, 36);
+	//PxRigidDynamic* cube = CreateTriangleMeshDynamic(cubeVerts, 8, cubeIndices, 36);
 	//gScene->addActor(*cube);
+
+	PxRigidStatic* cube = CreateTriangleMeshStatic(cubeVerts, 8, cubeIndices, 36);
+	gScene->addActor(*cube);
 
 	//for (PxU32 i = 0; i < 5; i++)
 	//	createStack(PxTransform(PxVec3(0, 0, stackZ -= 10.0f)), 10, 2.0f);
 	std::vector<float> vertices;
 	std::vector<unsigned int> indices;
-	//PxRigidStatic* rigidStaticBody1 = createStaticRigidBodyFromFile(objectPath1, vertices, indices);
-	//gScene->addActor(*rigidStaticBody1);
-	PxRigidDynamic* rigidDynamicBody1 = createDynamicRigidBodyFromFile(objectPath1, vertices, indices);
-	gScene->addActor(*rigidDynamicBody1);
+	PxRigidStatic* rigidStaticBody1 = createStaticRigidBodyFromFile(objectPath1, vertices, indices);
+	gScene->addActor(*rigidStaticBody1);
+	//PxRigidDynamic* rigidDynamicBody1 = createDynamicRigidBodyFromFile(objectPath1, vertices, indices);
+	//gScene->addActor(*rigidDynamicBody1);
 	if (!interactive)
 		createDynamic(PxTransform(PxVec3(0, 40, 100)), PxSphereGeometry(5), PxVec3(0, -50, -100));
 }
