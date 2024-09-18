@@ -36,6 +36,7 @@
 #include <ctype.h>
 #include <iostream>
 #include "PxPhysicsAPI.h"
+#include "gpu/PxPhysicsGpu.h"
 #include "../snippetcommon/SnippetPrint.h"
 #include "../snippetcommon/SnippetPVD.h"
 #include "../snippetutils/SnippetUtils.h"
@@ -163,8 +164,22 @@ static PxRigidDynamic* createDynamicRigidBodyFromFile(const std::string& filenam
 		indices.push_back(static_cast<unsigned int>(triangle(2)));
 	}
 
+	PxSDFDesc sdfDesc;
+	sdfDesc.spacing = 0.1f;
+	sdfDesc.subgridSize = 32;
+	sdfDesc.bitsPerSubgridPixel = PxSdfBitsPerSubgridPixel::e16_BIT_PER_PIXEL;
+	sdfDesc.numThreadsForSdfConstruction = 8;
+
+	bool enableGpuAcceleratedCooking = true;
+	if (enableGpuAcceleratedCooking)
+	{
+		//If sdfBuilder is NULL, the sdf will get cooked on the CPU using the number of threads specified above
+		sdfDesc.sdfBuilder = PxGetPhysicsGpu()->createSDFBuilder(gCudaContextManager);
+	}
+
 	// Create PhysX triangle mesh
 	PxTriangleMeshDesc meshDesc;
+	meshDesc.sdfDesc = &sdfDesc;
 	meshDesc.points.count = static_cast<PxU32>(vertices.size() / 3);
 	meshDesc.points.stride = sizeof(float) * 3;
 	meshDesc.points.data = vertices.data();
