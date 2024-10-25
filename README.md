@@ -1,3 +1,5 @@
+* see note.md for RH contribution.
+
 # NVIDIA PhysX
 
 Copyright (c) 2008-2023 NVIDIA Corporation. All rights reserved.
